@@ -1,0 +1,10 @@
+.git
+.idea
+.claude
+*.iml
+target
+docs
+tools
+config
+web/node_modules
+web/dist

@@ -1,0 +1,74 @@
+# 持续集成（CI）：每次往 main 推代码，自动验证「后端能不能编译打包、前端能不能构建」。
+#
+# 它跑在 GitHub 临时借的一台 Linux 机器上，跟你这台 Windows 电脑无关，
+# 跑完就销毁 —— 所以这里不能用 `mvn -o`（离线模式靠的是本机 ~/.m2 缓存，那台机器上没有）。
+#
+# 目录位置是固定的：.github/workflows/*.yml，文件名随意，这里叫 ci.yml。
+
+name: CI
+
+on:
+  # 推到 main 就跑
+  push:
+    branches: [main]
+    # 只改了文档就不必占用构建时间
+    paths-ignore:
+      - 'docs/**'
+      - '**.md'
+  # 以后开分支开发、提 PR 时也跑
+  pull_request:
+    branches: [main]
+  # 允许在 GitHub 网页上手动点一下「Run workflow」触发，方便调试
+  workflow_dispatch:
+
+# 最小权限：这个流程只需要读代码，不需要写任何东西
+permissions:
+  contents: read
+
+jobs:
+  # ---------------- 后端：能不能编译打包 ----------------
+  backend:
+    name: 后端编译打包
+    runs-on: ubuntu-latest
+    steps:
+      # 把仓库代码拉到这台临时机器上
+      - uses: actions/checkout@v4
+
+      # 装 JDK 17（项目要求），cache: maven 会把 ~/.m2 缓存起来，
+      # 第二次开始不用重新下依赖，快很多
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+          cache: maven
+
+      # -B 批处理模式（日志干净）、-ntp 不刷下载进度条
+      # -DskipTests：src/test 下目前没有测试，等写了测试就把这个参数删掉
+      - name: 编译并打包
+        run: mvn -B -ntp -DskipTests package
+
+  # ---------------- 前端：能不能构建出 dist ----------------
+  frontend:
+    name: 前端构建
+    runs-on: ubuntu-latest
+    # 前端代码在 web/ 子目录，下面所有命令都在这个目录里执行
+    defaults:
+      run:
+        working-directory: web
+    steps:
+      - uses: actions/checkout@v4
+
+      # Node 22 对齐本地版本；缓存键指向 web/package-lock.json
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+
+      # ci 而不是 install：严格按 package-lock.json 装，
+      # 版本一分不差，也不会顺手改 lock 文件
+      - name: 安装依赖
+        run: npm ci
+
+      - name: 构建
+        run: npm run build

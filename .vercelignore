@@ -1,0 +1,14 @@
+# Vercel CLI 上传源码时的排除清单。
+#
+# 注意 config/ 必须排除 —— 里面有真实的数据库口令和 Shopify token，
+# 上传到 Vercel 的构建服务器就等于泄露。
+# （本地 Docker 构建靠 .dockerignore 排除，这里是 Vercel 上传这一层。）
+
+.git
+.idea
+.claude
+docs
+tools
+target
+config
+web

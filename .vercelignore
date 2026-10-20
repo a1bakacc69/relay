@@ -11,4 +11,9 @@ docs
 tools
 target
 config
-web
+
+# 注意：绝对不要在这里写 web。
+# Vercel 是「先按仓库根的 .vercelignore 删文件，再切到 Root Directory」，
+# 所以写了 web 之后，relay-web 那个项目（Root Directory = web）进来时目录已经被删空，
+# 构建报 `sh: line 1: vite: command not found`。
+# 前端源码留在这里不会有任何代价：后端是 Container 构建，真正决定构建内容的是 .dockerignore。

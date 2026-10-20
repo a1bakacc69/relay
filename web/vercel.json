@@ -1,0 +1,17 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "rewrites": [
+    {
+      "source": "/api/(.*)",
+      "destination": "https://api.hopeyk.xyz/$1"
+    },
+    {
+      "source": "/supplier-api/(.*)",
+      "destination": "https://supplier.hopeyk.xyz/$1"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ]
+}

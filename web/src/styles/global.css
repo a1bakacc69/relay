@@ -1,0 +1,54 @@
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#app {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC',
+    'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+  background: #f5f7fa;
+  color: #303133;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* 卡片统一圆角，Element Plus 默认是 4px，看着有点硬 */
+.el-card {
+  border-radius: 8px;
+}
+
+/* 表格里的数字 / ID 用等宽字体，扫一眼能对齐 */
+.mono {
+  font-family: Consolas, Monaco, 'Courier New', monospace;
+  font-size: 12.5px;
+  color: #606266;
+}
+
+/* 次要说明文字 */
+.muted {
+  color: #909399;
+  font-size: 12px;
+}
+
+/* 表格上方那条工具条 */
+.toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+
+.toolbar-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}

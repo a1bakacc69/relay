@@ -1,19 +1,18 @@
-# Vercel CLI 上传源码时的排除清单。
+# Vercel 上传源码时的排除清单（语法同 .gitignore）。
 #
-# 注意 config/ 必须排除 —— 里面有真实的数据库口令和 Shopify token，
+# ⚠️ 每个条目都必须带前导斜杠，只匹配仓库根目录。
+# 不带斜杠的写法会匹配任意层级 —— 例如 `config` 会连
+# src/main/java/com/example/relay/config/ 这个 Java 包一起排除掉，
+# 导致 SecurityConfig（里面定义 PasswordEncoder）和 JwtAuthFilter 进不了镜像，
+# 线上启动直接报 "No qualifying bean of type PasswordEncoder"。
+#
+# /config/ 必须排除 —— 里面有真实的数据库口令和 Shopify token，
 # 上传到 Vercel 的构建服务器就等于泄露。
-# （本地 Docker 构建靠 .dockerignore 排除，这里是 Vercel 上传这一层。）
 
-.git
-.idea
-.claude
-docs
-tools
-target
-config
-
-# 注意：绝对不要在这里写 web。
-# Vercel 是「先按仓库根的 .vercelignore 删文件，再切到 Root Directory」，
-# 所以写了 web 之后，relay-web 那个项目（Root Directory = web）进来时目录已经被删空，
-# 构建报 `sh: line 1: vite: command not found`。
-# 前端源码留在这里不会有任何代价：后端是 Container 构建，真正决定构建内容的是 .dockerignore。
+/.git
+/.idea
+/.claude
+/docs
+/tools
+/target
+/config

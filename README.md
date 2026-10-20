@@ -1,4 +1,4 @@
-# Dsers — 多平台订单同步中台
+# Relay — 多平台订单同步中台
 
 把电商平台的订单自动流转到供应商发货，再把物流单号回写平台。订单状态全程可追踪。
 
@@ -92,13 +92,13 @@ Java 17 · Spring Boot 3.3 · MyBatis-Plus 3.5 · MySQL 8 · RestTemplate
    mvn spring-boot:run
    ```
 
-供应商侧由一个独立的模拟服务提供（`dsers-supplier`），它实现了
+供应商侧由一个独立的模拟服务提供（`relay-supplier`），它实现了
 下单、发货、查询物流三个接口，用来把整条链路跑通。
 
 ## 目录结构
 
 ```
-src/main/java/com/example/dsers/
+src/main/java/com/example/relay/
 ├── Controller/     HTTP 接口
 ├── service/        业务逻辑（OrderService、OrderSyncService）
 ├── client/         外部系统调用（ShopifyClient、SupplierClient）

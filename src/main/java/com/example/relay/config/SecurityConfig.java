@@ -53,6 +53,9 @@ public class SecurityConfig {
                         .requestMatchers("/webhook/**").permitAll()
                         // 容器里异常会转发到 /error，被拦的话真实错误就看不见了
                         .requestMatchers("/error").permitAll()
+                        // 定时兜底同步：调用方是 Vercel Cron，它拿不到我们的 JWT。
+                        // 这里放开路径，但接口内部自己校验 CRON_SECRET，两把锁缺一不可。
+                        .requestMatchers("/cron/**").permitAll()
                         // 其余全部要登录
                         .anyRequest().authenticated())
 
